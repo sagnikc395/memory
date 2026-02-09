@@ -1,12 +1,12 @@
 import dspy
 from litellm import json
 
-from .constants import LM
+from .config import LM
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
-from pydantic import BaseModel
+from pydantic import BaseModel  # noqa: E402
 
 
 class Memory(BaseModel):

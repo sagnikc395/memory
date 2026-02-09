@@ -1,8 +1,9 @@
-from memory import extract_memory
 import asyncio
+from memory.extract_memory import extract_memories_from_messages
+from memory.generate_embeddings import generate_embeddings
 
 
-def main():
+def memory_extraction_flow():
     messages = [
         {"role": "user", "content": "I like coffee"},
         {"role": "assistant", "content": "Understandable, have a great day!"},
@@ -17,11 +18,21 @@ def main():
     ]
     existing_categories = []
     asyncio.run(
-        extract_memory.extract_memories_from_messages(
+        extract_memories_from_messages(
             messages=messages, categories=existing_categories
         )
     )
 
 
+def generate_embeddings_flow():
+    texts = [
+        "hey this is sagnik, how are you ?",
+        "lowkey nowadays i have been interested more about computational biology and machine learning for biology",
+    ]
+
+    asyncio.run(generate_embeddings(texts))  # type: ignore
+
+
 if __name__ == "__main__":
-    main()
+    # memory_extraction_flow()
+    generate_embeddings_flow()
