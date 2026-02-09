@@ -27,3 +27,8 @@ this also serves as an inspiration and understanding of how products like
 ## references
 
 - [mem0 paper](https://arxiv.org/abs/2504.19413)
+
+## architecture
+
+1. For retrieving and keeping memories upto date
+![Architecture](assets/mem0-update-memory-architecture.excalidraw.png)
