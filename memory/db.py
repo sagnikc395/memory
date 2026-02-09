@@ -5,6 +5,7 @@ from qdrant_client.models import Distance, VectorParams, models
 from memory.memory_model import EmbeddedMemory
 from .config import DB_PORT, COLLECTION_NAME
 from uuid import uuid4
+from typing import Optional
 
 
 client = AsyncQdrantClient(url=f"http://localhost:{DB_PORT}")
@@ -54,3 +55,29 @@ async def insert_memories(memories: list[EmbeddedMemory]):
             for memory in memories
         ],
     )
+
+
+async def search_memories(
+    search_vector: list[float], user_id: int, categories: Optional[list[str]] = None
+):
+    must_condition: list[models.Condition] = [
+        models.FieldCondition(key="user_id", match=models.MatchValue(value=user_id))
+    ]
+
+    if categories:
+        must_condition.append(
+            models.FieldCondition(
+                key="categories", match=models.MatchAny(any=categories)
+            )
+        )
+
+    outs = await client.query_points(
+        collection_name=COLLECTION_NAME,
+        query=search_vector,
+        with_payload=True,
+        query_filter=models.Filter(must=must_condition),
+        score_threshold=0.1,
+        limit=4,
+    )
+
+    return outs.points
