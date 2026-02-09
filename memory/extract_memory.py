@@ -50,7 +50,9 @@ async def extract_memories_from_messages(messages, categories=[]):
         api_base="https://api.groq.com/openai/v1",
     )
     with dspy.context(lm=lm_instance):
-        out = await memory_extractor.acall(transcript=transcript,existing_categories=categories)
+        out = await memory_extractor.acall(
+            transcript=transcript, existing_categories=categories
+        )
 
     print(out)
     return out.values
