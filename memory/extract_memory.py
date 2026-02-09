@@ -1,17 +1,13 @@
 import dspy
 from litellm import json
 
+from memory.memory_model import Memory
+
 from .config import LM
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
-from pydantic import BaseModel  # noqa: E402
-
-
-class Memory(BaseModel):
-    information: str
-    predicted_categories: list[str]
 
 
 class MemoryExtracer(dspy.Signature):

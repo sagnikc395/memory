@@ -1,7 +1,10 @@
 # store our embeddings into a vector database
 from qdrant_client import AsyncQdrantClient
 from qdrant_client.models import Distance, VectorParams, models
-from .config import DB_PORT
+
+from memory.memory_model import EmbeddedMemory
+from .config import DB_PORT, COLLECTION_NAME
+from uuid import uuid4
 
 
 client = AsyncQdrantClient(url=f"http://localhost:{DB_PORT}")
@@ -30,3 +33,24 @@ async def create_memory_collection():
         )
 
         print("Collection has been created !")
+    else:
+        print("Collection already exists !")
+
+
+async def insert_memories(memories: list[EmbeddedMemory]):
+    await client.upsert(
+        collection_name=COLLECTION_NAME,
+        points=[
+            models.PointStruct(
+                id=uuid4().hex,
+                payload={
+                    "user_id": memory.user_id,
+                    "categories": memory.categories,
+                    "memory_text": memory.memory_text,
+                    "_date": memory._date,
+                },
+                vector=memory.embedding,
+            )
+            for memory in memories
+        ],
+    )
