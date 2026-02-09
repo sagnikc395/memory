@@ -32,3 +32,7 @@ this also serves as an inspiration and understanding of how products like
 
 1. For retrieving and keeping memories upto date
 ![Architecture](assets/mem0-update-memory-architecture.excalidraw.png)
+
+## examples
+
+- user extracts memories: ![memories](assets/memory_extraction_sample.png)
