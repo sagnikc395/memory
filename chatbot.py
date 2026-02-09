@@ -46,7 +46,7 @@ while True:
         response = client.chat.completions.create(
             model="qwen/qwen3-32b",
             messages=messages,  # type: ignore
-            temperature=0.6,
+            temperature=0.9,
             max_tokens=4096,
             top_p=0.95,
             stream=False,  # Set to True if you want to loop through chunks
