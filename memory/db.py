@@ -130,3 +130,25 @@ def convert_retrieved_records(point) -> RetrievedMemory:
         score=point.score,
     )
 
+
+async def get_all_categories(user_id):
+    # using the facet feature to get all the unique categories
+    # from the indexed 'categories' field
+    facet_filter = models.Filter(
+        must=[
+            models.FieldCondition(key="user_id", match=models.MatchValue(value=user_id))
+        ]
+    )
+
+    # use the facet now to get unique values from the indexed field
+    facet_result = await client.facet(
+        collection_name=COLLECTION_NAME,
+        key="categories",
+        facet_filter=facet_filter,
+        limit=1000,  # max unique categories to return
+    )
+
+    unique_categories = [hit.value for hit in facet_result.hits]
+
+    return unique_categories
+
