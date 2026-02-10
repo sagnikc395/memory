@@ -82,3 +82,24 @@ async def search_memories(
 
     return outs.points
 
+
+async def delete_user_records(user_id):
+    await client.delete(
+        collection_name=COLLECTION_NAME,
+        points_selector=models.FilterSelector(
+            filter=models.Filter(
+                must=[
+                    models.FieldCondition(
+                        key="user_id", match=models.MatchValue(value=user_id)
+                    )
+                ]
+            )
+        ),
+    )
+
+
+async def delete_records(point_ids):
+    await client.delete(
+        collection_name=COLLECTION_NAME,
+        points_selector=models.PointIdsList(points=point_ids),
+    )
