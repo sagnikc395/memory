@@ -81,3 +81,4 @@ async def search_memories(
     )
 
     return outs.points
+
