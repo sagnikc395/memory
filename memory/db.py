@@ -152,3 +152,8 @@ async def get_all_categories(user_id):
 
     return unique_categories
 
+
+def retrieved_point_repr(retrieved_memory: RetrievedMemory):
+    return f"""{retrieved_memory.memory_text} (Categories: {retrieved_memory.categories}) Relevance: {retrieved_memory.score:.2f}"""
+
+

@@ -1,6 +1,7 @@
 import asyncio
 from memory.extract_memory import extract_memories_from_messages
 from memory.generate_embeddings import generate_embeddings
+from memory.db import create_memory_collection
 
 
 def memory_extraction_flow():
@@ -31,6 +32,10 @@ def generate_embeddings_flow():
     ]
 
     asyncio.run(generate_embeddings(texts))  # type: ignore
+
+
+def create_vector_db():
+    asyncio.run(create_memory_collection())
 
 
 if __name__ == "__main__":
