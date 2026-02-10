@@ -22,3 +22,8 @@ class RetrievedMemory(BaseModel):
     categories: list[str]
     _date: date
     score: float
+
+
+class MemoryWithIds(BaseModel):
+    memory_id: int
+    memory_text: str
