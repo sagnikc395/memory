@@ -2,7 +2,7 @@
 from qdrant_client import AsyncQdrantClient
 from qdrant_client.models import Distance, VectorParams, models
 
-from memory.memory_model import EmbeddedMemory
+from memory.memory_model import EmbeddedMemory, RetrievedMemory
 from .config import DB_PORT, COLLECTION_NAME
 from uuid import uuid4
 from typing import Optional
@@ -103,3 +103,30 @@ async def delete_records(point_ids):
         collection_name=COLLECTION_NAME,
         points_selector=models.PointIdsList(points=point_ids),
     )
+
+
+async def fetch_all_user_records(user_id):
+    out = await client.query_points(
+        collection_name=COLLECTION_NAME,
+        query_filter=models.Filter(
+            must=[
+                models.FieldCondition(
+                    key="user_id", match=models.MatchValue(value=user_id)
+                )
+            ]
+        ),
+    )
+
+    return [convert_retrieved_records(point) for point in out.points]
+
+
+def convert_retrieved_records(point) -> RetrievedMemory:
+    return RetrievedMemory(
+        point_id=point.id,
+        user_id=point.payload["user_id"],
+        memory_text=point.payload["memory_text"],
+        categories=point.payload["categories"],
+        _date=point.payload["date"],
+        score=point.score,
+    )
+
