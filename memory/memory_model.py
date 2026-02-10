@@ -13,3 +13,12 @@ class EmbeddedMemory(BaseModel):
     categories: list[str]
     _date: date
     embedding: list[float]
+
+
+class RetrievedMemory(BaseModel):
+    point_id: str
+    user_id: int
+    memory_text: str
+    categories: list[str]
+    _date: date
+    score: float
